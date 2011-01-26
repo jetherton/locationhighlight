@@ -71,6 +71,10 @@
 							<strong><?php echo Kohana::lang('ui_main.layer_name');?>:</strong><br />
 							<?php print form::input('name', '', ' class="text"'); ?>
 						</div>
+						<div class="tab_form_item">
+							<strong>Parent Admin Area:</strong><br />
+							<?php print form::dropdown('parent_id', $parent_dropdown, 'standard'); ?>
+						</div>
 						<div style="clear:both"></div>
 						<div class="tab_form_item">
 							<strong><?php echo Kohana::lang('ui_main.kml_kmz_upload');?>:</strong><br />
@@ -96,7 +100,7 @@
 				<div class="report-form">
 					<?php print form::open(NULL,array('id' => 'layerListing',
 					 	'name' => 'layerListing')); ?>
-						<input type="hidden" name="action" id="action" value="">
+						<input type="hidden" name="action_id" id="action_id" value="">
 						<input type="hidden" name="adminarea_id" id="adminarea_id_action" value="">
 						<div class="table-holder">
 							<table class="table">
@@ -126,17 +130,35 @@
 										</tr>
 									<?php	
 									}
-									foreach ($adminareas as $adminarea)
+									foreach ($area_hierarchy as $area_data)
 									{
+										$adminarea = $area_data['area'];
+										$indents = $area_data['indent'];
+										
 										$adminarea_id = $adminarea->id;
 										$adminarea_name = $adminarea->name;
 										$adminarea_file = $adminarea->file;
+										$adminarea_parent_id = $adminarea->parent_id;
+										
+										//handle nulls
+										if($adminarea_parent_id == "")
+										{
+											$adminarea_parent_id = "NULL";
+										}
 										?>
 										<tr>
 											<td class="col-1">&nbsp;</td>
 											<td class="col-2">
 												<div class="post">
-													<h4><?php echo $adminarea_name; ?></h4>
+													<h4>
+														<?php 
+															for($i = 0; $i < $indents; $i++)
+															{
+																echo "&gt;&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+															}
+															echo $adminarea_name; 
+														?>
+													</h4>
 												</div>
 												<ul class="info">
 													<?php
@@ -152,7 +174,7 @@
 											</td>
 											<td class="col-4">
 												<ul>
-													<li class="none-separator"><a href="#add" onClick="fillFields('<?php echo(rawurlencode($adminarea_id)); ?>','<?php echo(rawurlencode($adminarea_name)); ?>','','','<?php echo(rawurlencode($adminarea_file)); ?>')"><?php echo Kohana::lang('ui_main.edit');?></a></li>
+													<li class="none-separator"><a href="#add" onClick="fillFields('<?php echo(rawurlencode($adminarea_id)); ?>','<?php echo(rawurlencode($adminarea_name)); ?>','<?php echo(rawurlencode($adminarea_parent_id)); ?>','','<?php echo(rawurlencode($adminarea_file)); ?>')"><?php echo Kohana::lang('ui_main.edit');?></a></li>
 													
 <li><a href="javascript:layerAction('d','DELETE','<?php echo(rawurlencode($adminarea_id)); ?>')" class="del"><?php echo Kohana::lang('ui_main.delete');?></a></li>
 												</ul>

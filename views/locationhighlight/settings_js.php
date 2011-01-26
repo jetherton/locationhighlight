@@ -16,11 +16,11 @@
  */
 ?>
 // Layers JS
-function fillFields(id, layer_name, layer_url, layer_color, layer_file_old)
+function fillFields(id, layer_name, parent_id, layer_color, layer_file_old)
 {
 	$("#adminarea_id").attr("value", unescape(id));
 	$("#name").attr("value", unescape(layer_name));
-	$("#layer_file_old").attr("value", unescape(layer_file_old));
+	$("#parent_id").val(unescape(parent_id));
 }
 
 function layerAction ( action, confirmAction, id )
@@ -32,7 +32,7 @@ function layerAction ( action, confirmAction, id )
 		// Set Category ID
 		$("#adminarea_id_action").attr("value", id);
 		// Set Submit Type
-		$("#action").attr("value", action);		
+		$("#action_id").val(action);
 		// Submit Form
 		$("#layerListing").submit();
 	}

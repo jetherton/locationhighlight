@@ -47,13 +47,18 @@ class LocationHighlight_settings_Controller extends Admin_Controller
 		// check, has the form been submitted, if so, setup validation
 		if ($_POST)
 		{
+		
+			//echo Kohana::debug($_POST);
+			
 			// Instantiate Validation, use $post, so we don't overwrite $_POST fields with our own things
 			$post = Validation::factory(array_merge($_POST,$_FILES));
 
 			 //	 Add some filters
 			$post->pre_filter('trim', TRUE);
+			
+			$action = isset($_POST['action_id']) ? $_POST['action_id'] : $_POST['action'];
 
-			if ($post->action == 'a')		// Add Action
+			if ($action == 'a')		// Add Action
 			{
 				// Add some rules, the input field, followed by a list of checks, carried out in order
 				$post->add_rules('name','required', 'length[3,80]');
@@ -63,12 +68,25 @@ class LocationHighlight_settings_Controller extends Admin_Controller
 			// Test to see if things passed the rule checks
 			if ($post->validate())
 			{
+				
 				$adminarea_id = $post->adminarea_id;
 				$adminarea = new Adminareas_Model($adminarea_id);
-
-				if( $post->action == 'd' )
+				if( $action == 'd' )
 				{ // Delete Action
-
+					//get the parent Id of this area we're deleting
+					$parent_id = $adminarea->parent_id;
+					//move all of this area's kids to its parent
+					$adminareas = ORM::factory("adminareas")
+						->orderby('name')
+						->where('parent_id', $adminarea_id)
+						->find_all();
+					
+					foreach($adminareas as $area)
+					{
+						$area->parent_id = $parent_id;
+						$area->save();
+					}
+					
 					// Delete KMZ file if any
 					$file = $adminarea->file;
 					if ( ! empty($file)
@@ -80,41 +98,15 @@ class LocationHighlight_settings_Controller extends Admin_Controller
 					$form_action = strtoupper(Kohana::lang('ui_admin.deleted'));
 
 				}
-				elseif( $post->action == 'v' )
-				{ // Show/Hide Action
-					if ($adminarea->loaded==true)
-					{
-						if ($adminarea->layer_visible == 1) {
-							$adminarea->layer_visible = 0;
-						}
-						else {
-							$adminarea->layer_visible = 1;
-						}
-						$adminarea->save();
-						$form_saved = TRUE;
-						$form_action = strtoupper(Kohana::lang('ui_admin.modified'));
-					}
-				}
-				elseif( $post->action == 'i' )
-				{ // Delete KMZ/KML Action
-					if ($adminarea->loaded==true)
-					{
-						$file = $adminarea->file;
-						if ( ! empty($file)
-							AND file_exists(Kohana::config('upload.directory', TRUE).$file))
-						{
-							unlink(Kohana::config('upload.directory', TRUE) . $file);
-						}
-
-						$adminarea->file = null;
-						$adminarea->save();
-						$form_saved = TRUE;
-						$form_action = strtoupper(Kohana::lang('ui_admin.modified'));
-					}
-				}
-				elseif( $post->action == 'a' )
+				elseif( $action == 'a' )
 				{ // Save Action
 					$adminarea->name = $post->name;
+					$parent_id = $post->parent_id;
+					if($parent_id == "NULL")
+					{
+						$parent_id = NULL;
+					}
+					$adminarea->parent_id = $parent_id;
 					$adminarea->save();
 
 					// Upload KMZ/KML
@@ -170,16 +162,43 @@ class LocationHighlight_settings_Controller extends Admin_Controller
 		// Pagination
 		$pagination = new Pagination(array(
 							'query_string' => 'page',
-							'items_per_page' => (int) Kohana::config('settings.items_per_page_admin'),
+							'items_per_page' => 500,
 							'total_items'	 => ORM::factory('adminareas')
 													->count_all()
 						));
 
 		$adminareas = ORM::factory('adminareas')
 						->orderby('name', 'asc')
-						->find_all((int) Kohana::config('settings.items_per_page_admin'),
-							$pagination->sql_offset);
+						->find_all(500,	$pagination->sql_offset);
+							
+		
+		//turn the admin areas into a hierarchy
+		$pre_hierarchy = array();
+		foreach($adminareas as $area)
+		{
+			if(!isset($pre_hierarchy[$area->parent_id]))
+			{
+				$pre_hierarchy[$area->parent_id] = array($area);
+			}
+			else
+			{
+				$pre_hierarchy[$area->parent_id][] = $area;
+			}
+		}
+		
+		
+		$area_hierarchy = $this->hierarchy_stack($pre_hierarchy, '', 0);
+		
+							
+		$parent_dropdown = array();
+		$parent_dropdown['NULL']="--None--";
+		foreach($adminareas as $area)
+		{
+			$parent_dropdown[$area->id] = $area->name;
+		}
 
+		$this->template->content->area_hierarchy = $area_hierarchy;
+		$this->template->content->parent_dropdown = $parent_dropdown;
 		$this->template->content->errors = $errors;
 		$this->template->content->form_error = $form_error;
 		$this->template->content->form_saved = $form_saved;
@@ -191,6 +210,34 @@ class LocationHighlight_settings_Controller extends Admin_Controller
 		// Javascript Header
 		$this->template->colorpicker_enabled = TRUE;
 		$this->template->js = new View('locationhighlight/settings_js');
+	}
+	
+	
+	
+	//creates a mess of nested arrays to represent our hierarchies of stuff
+	private function hierarchy_stack($flat_array, $key, $indent)
+	{
+		$retVal = array();
+		
+		//end condition
+		if(!isset($flat_array[$key]))
+		{
+			return $retVal;
+		}
+	
+		foreach($flat_array[$key] as $area)
+		{
+			$retVal[] = array("area"=>$area, "indent"=>$indent);
+		
+			$kids = $this->hierarchy_stack($flat_array, $area->id, $indent+1);
+			if(count($kids) > 0)
+			{
+				$retVal = array_merge($retVal, $kids);
+			}
+			
+		}
+		
+		return $retVal;
 	}
 
 }//end class
