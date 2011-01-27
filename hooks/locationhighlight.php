@@ -42,7 +42,7 @@ class locationhighlight {
 				//Hook into frontend Submit View
 				case 'submit':
 					//Hook into the form on the frontend
-					Event::add('ushahidi_action.report_form', array($this, '_highlight'));
+					Event::add('ushahidi_action.report_form_admin_location', array($this, '_highlight'));
 					break;
 				
 					
@@ -59,6 +59,8 @@ class locationhighlight {
 	public function _highlight()
 	{				
 		// Load the View		
+		
+		echo "not getting here";
 		$form = View::factory('locationhighlight/incident_edit');
 		$form->admin_areas = adminareas::get_admin_areas_for_dropdown();
 		$form->render(TRUE);
