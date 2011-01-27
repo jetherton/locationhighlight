@@ -59,8 +59,6 @@ class locationhighlight {
 	public function _highlight()
 	{				
 		// Load the View		
-		
-		echo "not getting here";
 		$form = View::factory('locationhighlight/incident_edit');
 		$form->admin_areas = adminareas::get_admin_areas_for_dropdown();
 		$form->render(TRUE);
