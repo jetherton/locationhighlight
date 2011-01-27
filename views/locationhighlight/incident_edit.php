@@ -52,7 +52,7 @@
 			map.addLayer(layer);
 			
 			//get the HTML for the next set of kid admin areas
-			$.get("<?php echo url::base() ?>admin/locationhighlight/get_admin_areas/"+adminAreaId+"/"+(level+1),
+			$.get("<?php echo url::base() ?>locationhighlight/get_admin_areas/"+adminAreaId+"/"+(level+1),
 			function(data){
 				$('#adminarea_level_'+level).html(data);
 			});

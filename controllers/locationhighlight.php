@@ -5,20 +5,10 @@
  */
 
 
-class LocationHighlight_Controller extends Admin_Controller
+class LocationHighlight_Controller extends Controller
 {
 
-	function __construct()
-	{
-		parent::__construct();
-		$this->template->this_page = 'manage';
 
-		// If user doesn't have access, redirect to dashboard
-		if ( ! admin::permissions($this->user, "manage"))
-		{
-			url::redirect(url::site().'admin/dashboard');
-		}
-	}
 
 
 	function get_admin_areas($parent_id, $level)
