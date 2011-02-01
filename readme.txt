@@ -2,7 +2,7 @@
 name: Location Highlighter
 website: http://apps.ushahidi.com
 description: Lets users pick from a drop down list the administrative areas they are looking for and it highlights them on the map
-version: 0.1
+version: 1.0
 requires: 2.0
 tested up to: 2.0
 author: John Etherton
