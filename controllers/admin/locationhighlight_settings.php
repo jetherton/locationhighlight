@@ -56,6 +56,37 @@ class LocationHighlight_settings_Controller extends Admin_Controller
 			 //	 Add some filters
 			$post->pre_filter('trim', TRUE);
 			
+			
+			//check if we're deleting a layer name
+			$level_action = isset($_POST['level_action']) ? $_POST['level_action'] : "";
+			
+			if ($level_action == 'delete')		
+			{
+				//get the id of the layer to delete
+				$del_level_id = $_POST['next_level'];
+				$del_level = 0;
+			
+				//get the item and blow it out of the water
+				$level_name = ORM::factory('adminareas_level_names')->where("level", $del_level_id)->find();
+				if($level_name)
+				{
+					$del_level = $level_name->level;
+					$level_name->delete();				
+					
+					//now fix the gap this just made in the hierarchy
+					$level_names = ORM::factory('adminareas_level_names')->find_all();
+					foreach($level_names as $level_name)
+					{
+						if($level_name->level > $del_level)
+						{
+							$level_name->level = $level_name->level - 1;
+							$level_name->save();
+						}
+					}
+				}
+			}
+
+			
 			$action = isset($_POST['action_id']) ? $_POST['action_id'] : $_POST['action'];
 
 			if ($action == 'a')		// Add Action
@@ -196,7 +227,21 @@ class LocationHighlight_settings_Controller extends Admin_Controller
 		{
 			$parent_dropdown[$area->id] = $area->name;
 		}
-
+		
+		//get level names
+		$level_names = ORM::factory('adminareas_level_names')
+			->orderby("level", "asc")
+			->find_all();
+		
+		//figure out the next level
+		$next_level = 1;
+		foreach($level_names as $level_name)
+		{
+			$next_level = $level_name->level + 1;
+		}
+		
+		$this->template->content->next_level = $next_level;
+		$this->template->content->level_names = $level_names;
 		$this->template->content->area_hierarchy = $area_hierarchy;
 		$this->template->content->parent_dropdown = $parent_dropdown;
 		$this->template->content->errors = $errors;
@@ -238,6 +283,48 @@ class LocationHighlight_settings_Controller extends Admin_Controller
 		}
 		
 		return $retVal;
+	}//end hierarchy_stack
+	
+	/*********************************************
+	* Return html for a new level name 
+	*********************************************/
+	public function new_level_name($next_level)
+	{
+	
+		$this->template = "";
+		$this->auto_render = FALSE;
+		
+		//figure out the next level
+		//$next_level = 1;
+		
+		$view = new View('locationhighlight/new_level_name');
+		$view->next_level = $next_level;
+		$view ->render(TRUE);
+	
+	}//end function new_level_name
+	
+	
+	/************************************************
+	* Save info of a level name
+	************************************************/
+	public function save_level_name($level, $name)
+	{
+	
+		$this->template = "";
+		$this->auto_render = FALSE;
+		
+		$level_name = ORM::factory('adminareas_level_names')->where("level", $level)->find();
+		if(!$level_name)
+		{
+			//doesn't exists so make a new one
+			$level_name = ORM::factory('adminareas_level_names');
+		}
+		
+		$level_name->name = $name;
+		$level_name->level = $level;
+		$level_name->save();
+		
+		echo "success";
 	}
 
 }//end class

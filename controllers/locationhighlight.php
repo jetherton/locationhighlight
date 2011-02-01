@@ -21,9 +21,19 @@ class LocationHighlight_Controller extends Controller
 		{
 			return;
 		}
+		
+		$level_name_text = "administrative area";
+		$level_name = ORM::factory('adminareas_level_names')->where("level", $level)->find();
+		if($level_name->loaded)
+		{
+			$level_name_text = $level_name->name;
+		}
+		
+		
 	
 		// Load the View		
 		$form = View::factory('locationhighlight/sub_admin_areas');
+		$form->level_name_text = $level_name_text;
 		$form->admin_areas = $adminareas;
 		$form->parent_name = ORM::factory('adminareas')->where("id", $parent_id)->find()->name;
 		$form->level = $level;

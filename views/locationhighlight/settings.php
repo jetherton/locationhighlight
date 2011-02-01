@@ -52,6 +52,78 @@
 				
 								<!-- tabs -->
 				<div class="tabs">
+				
+				
+				<!-- Level Names -->
+				<div style="margin-bottom:20px;">
+				<h3> Administrative area levels </h3>
+				<a href="#" onclick="addNewLevelName(); return false;" style="border:solid grey 1px; background:#f2f7fa; float:right; padding:5px; margin 5px;">Add New</a>
+				
+				
+				<!-- level-table -->
+				<div class="report-form">
+						<div>
+							<table  class="table">
+								<thead>
+									<tr>
+										<th class="col-1" style="width:20px;">&nbsp;</th>
+										<th class="col-2" style="width:50px;">Level</th>
+										<th class="col-3" style="width:200px;">Level Name</th>
+										<th class="col-4" style="width:200px;"><?php echo Kohana::lang('ui_main.actions');?></th>
+									</tr>
+								</thead>
+								<tfoot>
+									<tr class="foot">
+										<td colspan="4">
+											---
+										</td>
+									</tr>
+								</tfoot>
+								<tbody id="levelnametable">
+									<?php
+									if ( count ($level_names) == 0)
+									{
+									?>
+										<tr id="nolevelnames">
+											<td colspan="4" class="col">
+												<h3><?php echo Kohana::lang('ui_main.no_results');?></h3>
+											</td>
+										</tr>
+									<?php	
+									}
+									foreach ($level_names as $level_name)
+									{
+										
+									?>
+										<tr>
+											<td class="col-1" style="width:20px;">&nbsp;</td>
+											<td class="col-2" style="width:50px;">
+														<?php echo $level_name->level; ?>
+											</td>
+											<td class="col-3" style="width:200px;">
+												<input type="text" id="level_name_form_<?php echo $level_name->level; ?>" name="level_name_form_<?php echo $level_name->level; ?>" value="<?php echo $level_name->name; ?>"/>
+											</td>
+											<td class="col-4" style="width:200px;">
+												<span id="name_level_status<?php echo $level_name->level; ?>"></span>
+												<ul>
+													<li class="none-separator"><a href="#" onclick="saveLevelName('<?php echo $level_name->level; ?>'); return false;">Save</a></li>
+													<li><a href="#" onclick="deleteLevelName('<?php echo $level_name->level; ?>'); return false;"> Delete</a></li>
+												</ul>
+											</td>
+										</tr>
+										<?php									
+									}
+									?>
+								</tbody>
+							</table>
+						</div>
+				</div>
+				
+				<!-- /Level Names-->
+				
+				
+				</div>
+				
 					<!-- tabset -->
 					<a name="add"></a>
 					<ul class="tabset">
@@ -100,6 +172,9 @@
 				<div class="report-form">
 					<?php print form::open(NULL,array('id' => 'layerListing',
 					 	'name' => 'layerListing')); ?>
+						<input type="hidden" id="next_level"  name="next_level" value="<?php echo $next_level; ?>" />
+						<input type="hidden" id="level_action"  name="level_action" value="" />
+
 						<input type="hidden" name="action_id" id="action_id" value="">
 						<input type="hidden" name="adminarea_id" id="adminarea_id_action" value="">
 						<div class="table-holder">

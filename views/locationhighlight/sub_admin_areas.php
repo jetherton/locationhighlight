@@ -1,7 +1,7 @@
 
 
 	<h4>
-		Select administrative area for <?php echo $parent_name; ?>:
+		Select <?php echo $level_name_text; ?> for <?php echo $parent_name; ?>:
 	</h4>
 	<?php print form::dropdown('admin_area_'.$level, $admin_areas, 'standard'); ?>
 	

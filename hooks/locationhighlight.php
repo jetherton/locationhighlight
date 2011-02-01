@@ -60,6 +60,14 @@ class locationhighlight {
 	{				
 		// Load the View		
 		$form = View::factory('locationhighlight/incident_edit');
+		
+		$level_1_name = "administrative area";
+		$level_name = ORM::factory('adminareas_level_names')->where("level", 1)->find();
+		if($level_name->loaded)
+		{
+			$level_1_name = $level_name->name;
+		}
+		$form->level_name = $level_1_name;
 		$form->admin_areas = adminareas::get_admin_areas_for_dropdown();
 		$form->render(TRUE);
 	}//end method

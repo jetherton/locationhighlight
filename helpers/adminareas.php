@@ -18,7 +18,7 @@ class adminareas_Core {
 		$dropdown = array();
 		foreach($adminareas as $adminarea)
 		{
-			$dropdown[$adminarea->id."|".url::base().Kohana::config('upload.relative_directory').'/'.$adminarea->file] = $adminarea->name;
+			$dropdown[$adminarea->id."|".$adminarea->file] = $adminarea->name;
 		}
 		return $dropdown;
 

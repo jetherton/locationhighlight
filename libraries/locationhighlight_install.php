@@ -22,12 +22,19 @@ class Locationhighlight_Install {
 	public function run_install()
 	{
 		$this->db->query('CREATE TABLE IF NOT EXISTS `'.Kohana::config('database.default.table_prefix').'adminareas` (
-				  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-				  `parent_id` int(10) unsigned DEFAULT NULL,
-				  `name` varchar(255) DEFAULT NULL,
-				  `file` varchar(255) DEFAULT NULL,
-				  PRIMARY KEY (`id`)
-				) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1');
+			  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+			  `parent_id` int(10) unsigned DEFAULT NULL,
+			  `name` varchar(255) DEFAULT NULL,
+			  `file` varchar(255) DEFAULT NULL,
+			  PRIMARY KEY (`id`)
+			) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1');
+				
+		$this->db->query('CREATE TABLE IF NOT EXISTS `'.Kohana::config('database.default.table_prefix').'adminareas_level_names` (
+			  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+			  `level` int(10) unsigned NOT NULL,
+			  `name` varchar(255) DEFAULT NULL,
+			  PRIMARY KEY (`id`)
+			) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1');
 	}
 
 	/**
