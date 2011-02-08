@@ -19,6 +19,9 @@
 			var seperatorPos =  layerData.indexOf("|");
 			var adminAreaId = layerData.substring(0, seperatorPos);
 			var layerURL = "<?php echo url::base().Kohana::config('upload.relative_directory').'/'; ?>" + encodeURIComponent(layerData.substring(seperatorPos+1));
+			
+			//start the little spinny waiting deal
+			$('#admin_area_loading_'+level).html('<img src="<?php echo url::base(); ?>media/img/loading_g.gif"/>');
 
 			
 			//gets all the things off the map
@@ -43,6 +46,7 @@
 			$.get("<?php echo url::base() ?>locationhighlight/get_admin_areas/"+adminAreaId+"/"+(level+1),
 			function(data){
 				$('#adminarea_level_'+level).html(data);
+				$('#admin_area_loading_'+level).html("");
 			});
 			
 			return false;
@@ -80,7 +84,7 @@
 	<input type="hidden" id="max_admin_area_level" name="max_admin_area_level" value="1" />
 	<?php print form::dropdown('admin_area_1', $admin_areas, 'standard'); ?>
 	
-	<a href="#" onclick="switchArea(1);  return false;">update map</a>
+	<a href="#" onclick="switchArea(1);  return false;">update map</a> <span id="admin_area_loading_1"></span>
 
 	<div id="adminarea_level_1"></div>
 
