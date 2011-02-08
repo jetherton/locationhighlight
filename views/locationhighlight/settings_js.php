@@ -16,6 +16,8 @@
  */
 ?>
 // Layers JS
+
+
 function fillFields(id, layer_name, parent_id, layer_color, layer_file_old)
 {
 	$("#adminarea_id").attr("value", unescape(id));
@@ -67,7 +69,8 @@ function saveLevelName(level)
 		
 		level_status_msg = $('#name_level_status'+level);
 		level_status_msg.html("<span style=\"background:#aaeeaa; border:solid 1px #88dd88; float:right; padding:5px;\">Saved</span>");
-		setTimeout("level_status_msg.html(\"\");", 3000);
+		timeOutStr = "$('#name_level_status"+level+"').html(\"\");";
+		setTimeout(timeOutStr, 3000);
 	}); 
 	return false;
 }
