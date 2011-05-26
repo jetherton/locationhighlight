@@ -42,7 +42,8 @@ class locationhighlight {
 				//Hook into frontend Submit View
 				case 'submit':
 					//Hook into the form on the frontend
-					Event::add('ushahidi_action.report_form_admin_location', array($this, '_highlight'));
+					Event::add('ushahidi_action.report_form_location', array($this, '_highlight'));
+					Event::add('ushahidi_action.report_form_admin_location', array($this, '_highlight')); //for backwards compatibility
 					break;
 				
 					
