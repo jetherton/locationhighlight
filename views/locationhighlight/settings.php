@@ -1,16 +1,13 @@
 <?php 
 /**
- * Layers view page.
+ *  Location Highlight English Language file
  *
- * PHP version 5
- * LICENSE: This source file is subject to LGPL license 
- * that is available through the world-wide-web at the following URI:
- * http://www.gnu.org/copyleft/lesser.html
- * @author     Ushahidi Team <team@ushahidi.com> 
- * @package    Ushahidi - http://source.ushahididev.com
- * @module     Layers view
- * @copyright  Ushahidi - http://www.ushahidi.com
- * @license    http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License (LGPL) 
+ * This plugin was written for Ushahidi Liberia, by the contractors of Ushahidi Liberia
+ * 2011
+ *
+ * @package  Location Highlight plugin
+ * @author     Carter Draper <carjimdra@gmail.com>
+ * 
  */
 ?>
 			<div class="bg">
@@ -56,8 +53,8 @@
 				
 				<!-- Level Names -->
 				<div style="margin-bottom:20px;">
-				<h3> Administrative area levels </h3>
-				<a href="#" onclick="addNewLevelName(); return false;" style="border:solid grey 1px; background:#f2f7fa; float:right; padding:5px; margin 5px;">Add New</a>
+				<h3><?php echo Kohana::lang('file.admin');?></h3>
+				<a href="#" onclick="addNewLevelName(); return false;" style="border:solid grey 1px; background:#f2f7fa; float:right; padding:5px; margin 5px;"><?php echo Kohana::lang('file.new');?></a>
 				
 				
 				<!-- level-table -->
@@ -67,8 +64,8 @@
 								<thead>
 									<tr>
 										<th class="col-1" style="width:20px;">&nbsp;</th>
-										<th class="col-2" style="width:50px;">Level</th>
-										<th class="col-3" style="width:200px;">Level Name</th>
+										<th class="col-2" style="width:50px;"><?php echo Kohana::lang('file.level');?></th>
+										<th class="col-3" style="width:200px;"><?php echo Kohana::lang('file.level_name');?></th>
 										<th class="col-4" style="width:200px;"><?php echo Kohana::lang('ui_main.actions');?></th>
 									</tr>
 								</thead>
@@ -106,8 +103,8 @@
 											<td class="col-4" style="width:200px;">
 												<span id="name_level_status<?php echo $level_name->level; ?>"></span>
 												<ul>
-													<li class="none-separator"><a href="#" onclick="saveLevelName('<?php echo $level_name->level; ?>'); return false;">Save</a></li>
-													<li><a href="#" onclick="deleteLevelName('<?php echo $level_name->level; ?>'); return false;"> Delete</a></li>
+													<li class="none-separator"><a href="#" onclick="saveLevelName('<?php echo $level_name->level; ?>'); return false;"><?php echo Kohana::lang('file.save');?></a></li>
+													<li><a href="#" onclick="deleteLevelName('<?php echo $level_name->level; ?>'); return false;"><?php echo Kohana::lang('file.delete');?></a></li>
 												</ul>
 											</td>
 										</tr>
@@ -144,7 +141,7 @@
 							<?php print form::input('name', '', ' class="text"'); ?>
 						</div>
 						<div class="tab_form_item">
-							<strong>Parent Admin Area:</strong><br />
+							<strong><?php echo Kohana::lang('file.parent');?></strong><br />
 							<?php print form::dropdown('parent_id', $parent_dropdown, 'standard'); ?>
 						</div>
 						<div style="clear:both"></div>
@@ -182,7 +179,7 @@
 								<thead>
 									<tr>
 										<th class="col-1">&nbsp;</th>
-										<th class="col-2">Admin Areas</th>
+										<th class="col-2"><?php echo Kohana::lang('file.area');?></th>
 										<th class="col-4"><?php echo Kohana::lang('ui_main.actions');?></th>
 									</tr>
 								</thead>

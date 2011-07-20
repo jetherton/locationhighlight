@@ -76,15 +76,14 @@
 	</script>
 
 
-	<span style="float:right;"><a href="#" onclick="clearMap(1); $('#adminarea_level_1').html(''); return false;">Clear Map</a></span>
-	<h4>
-		Select <?php echo $level_name; ?>:
+	<span style="float:right;"><a href="#" onclick="clearMap(1); $('#adminarea_level_1').html(''); return false;"><?php echo Kohana::lang('file.clear');?></a></span>
+	<h4><?php echo Kohana::lang('file.select');?><?php echo $level_name; ?>:
 	</h4>
 	
 	<input type="hidden" id="max_admin_area_level" name="max_admin_area_level" value="1" />
 	<?php print form::dropdown('admin_area_1', $admin_areas, 'standard'); ?>
 	
-	<a href="#" onclick="switchArea(1);  return false;">update map</a> <span id="admin_area_loading_1"></span>
+	<a href="#" onclick="switchArea(1);  return false;"><?php echo Kohana::lang('file.update');?></a> <span id="admin_area_loading_1"></span>
 
 	<div id="adminarea_level_1"></div>
 
