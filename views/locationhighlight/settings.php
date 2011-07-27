@@ -53,8 +53,8 @@
 				
 				<!-- Level Names -->
 				<div style="margin-bottom:20px;">
-				<h3><?php echo Kohana::lang('file.admin');?></h3>
-				<a href="#" onclick="addNewLevelName(); return false;" style="border:solid grey 1px; background:#f2f7fa; float:right; padding:5px; margin 5px;"><?php echo Kohana::lang('file.new');?></a>
+				<h3><?php echo Kohana::lang('layer.admin');?></h3>
+				<a href="#" onclick="addNewLevelName(); return false;" style="border:solid grey 1px; background:#f2f7fa; float:right; padding:5px; margin 5px;"><?php echo Kohana::lang('layer.new');?></a>
 				
 				
 				<!-- level-table -->
@@ -64,8 +64,8 @@
 								<thead>
 									<tr>
 										<th class="col-1" style="width:20px;">&nbsp;</th>
-										<th class="col-2" style="width:50px;"><?php echo Kohana::lang('file.level');?></th>
-										<th class="col-3" style="width:200px;"><?php echo Kohana::lang('file.level_name');?></th>
+										<th class="col-2" style="width:50px;"><?php echo Kohana::lang('layer.level');?></th>
+										<th class="col-3" style="width:200px;"><?php echo Kohana::lang('layer.level_name');?></th>
 										<th class="col-4" style="width:200px;"><?php echo Kohana::lang('ui_main.actions');?></th>
 									</tr>
 								</thead>
@@ -103,8 +103,8 @@
 											<td class="col-4" style="width:200px;">
 												<span id="name_level_status<?php echo $level_name->level; ?>"></span>
 												<ul>
-													<li class="none-separator"><a href="#" onclick="saveLevelName('<?php echo $level_name->level; ?>'); return false;"><?php echo Kohana::lang('file.save');?></a></li>
-													<li><a href="#" onclick="deleteLevelName('<?php echo $level_name->level; ?>'); return false;"><?php echo Kohana::lang('file.delete');?></a></li>
+													<li class="none-separator"><a href="#" onclick="saveLevelName('<?php echo $level_name->level; ?>'); return false;"><?php echo Kohana::lang('layer.save');?></a></li>
+													<li><a href="#" onclick="deleteLevelName('<?php echo $level_name->level; ?>'); return false;"><?php echo Kohana::lang('layer.delete');?></a></li>
 												</ul>
 											</td>
 										</tr>
@@ -141,7 +141,7 @@
 							<?php print form::input('name', '', ' class="text"'); ?>
 						</div>
 						<div class="tab_form_item">
-							<strong><?php echo Kohana::lang('file.parent');?></strong><br />
+							<strong><?php echo Kohana::lang('layer.parent');?></strong><br />
 							<?php print form::dropdown('parent_id', $parent_dropdown, 'standard'); ?>
 						</div>
 						<div style="clear:both"></div>
@@ -179,7 +179,7 @@
 								<thead>
 									<tr>
 										<th class="col-1">&nbsp;</th>
-										<th class="col-2"><?php echo Kohana::lang('file.area');?></th>
+										<th class="col-2"><?php echo Kohana::lang('layer.area');?></th>
 										<th class="col-4"><?php echo Kohana::lang('ui_main.actions');?></th>
 									</tr>
 								</thead>

@@ -9,8 +9,8 @@
 		<td class="col-4" style="width:200px;">
 			<span id="name_level_status<?php echo $next_level; ?>"></span>
 			<ul>
-				<li class="none-separator"><a href="#" onclick="saveLevelName('<?php echo $next_level; ?>'); return false;"><?php echo Kohana::lang('file.save');?></a></li>
-				<li><a href="#" onclick="deleteLevelName('<?php echo $next_level; ?>'); return false;"><?php echo Kohana::lang('file.delete');?></a></li>
+				<li class="none-separator"><a href="#" onclick="saveLevelName('<?php echo $next_level; ?>'); return false;"><?php echo Kohana::lang('layer.save');?></a></li>
+				<li><a href="#" onclick="deleteLevelName('<?php echo $next_level; ?>'); return false;"><?php echo Kohana::lang('layer.delete');?></a></li>
 			</ul>
 		</td>
 	</tr>
