@@ -33,6 +33,8 @@
 		'lat'=>'Latitude',
 		'lon'=>'Longitude',
 		'already_new_city' => 'There is already a new city that needs to be saved',
+		'csv_upload' =>'Upload CSV data',
+		'csv_upload_details'=>'CSV should have the following columns:<br/><br/>CITY_NAME,&lt;admin area 1&gt;,&lt;admin area 2&gt;,...&lt;admin area N&gt;,LAT, LON<br/><br/> Be sure to define your admin areas before running the import. You will also need to upload the KML files manually, sorry.',
 	
 	);
 ?>

@@ -429,5 +429,71 @@ class LocationHighlight_settings_Controller extends Admin_Controller
 		
 		echo "Worked, deleted $id";
 	}	
+	
+	
+	
+	
+	
+	public function upload()
+	{
+
+		if($_SERVER['REQUEST_METHOD'] == 'GET') {
+			$this->template->content = new View('locationhighlight/data_upload');
+			$this->template->content->title = 'Upload Data';
+			$this->template->content->form_error = false;
+		}
+		if ($_SERVER['REQUEST_METHOD']=='POST')
+		{
+			$errors = array();
+			$notices = array();
+			
+			if (!$_FILES['csvfile']['error']) 
+			{
+				if (file_exists($_FILES['csvfile']['tmp_name']))
+				{
+					if($filehandle = fopen($_FILES['csvfile']['tmp_name'], 'r'))
+					{
+						$importer = new LocationhighlightImporter;
+						
+						if ($importer->import($filehandle))
+						{
+							$this->template->content = new View('locationhighlight/data_upload_success');
+							$this->template->content->title = 'Upload Reports';
+							$this->template->content->rowcount = $importer->totalrows;
+							$this->template->content->imported = $importer->importedrows;
+							$this->template->content->notices = $importer->notices;
+						}
+						else
+						{
+							$errors = $importer->errors;
+						}
+					}
+					else
+					{
+						$errors[] = Kohana::lang('ui_admin.file_open_error');
+					}
+				} // file exists?
+				else
+				{
+					$errors[] = Kohana::lang('ui_admin.file_not_found_upload');
+				}
+			} // upload errors?
+			else
+			{
+				$errors[] = $_FILES['csvfile']['error'];
+			}
+
+			if(count($errors))
+			{
+				$this->template->content = new View('admin/reports_upload');
+				$this->template->content->title = Kohana::lang('ui_admin.upload_reports');
+				$this->template->content->errors = $errors;
+				$this->template->content->form_error = 1;
+			}
+		} // _POST
+	}
+	
+	
+	
 
 }//end class

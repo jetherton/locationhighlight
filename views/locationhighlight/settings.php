@@ -334,6 +334,9 @@
 				</div>
 				
 				<!-- /Cities -->
-				
+				<br/>
+				<h3>
+				<a href="<?php echo url::base()."/admin/locationhighlight_settings/upload"?>" ><?php echo Kohana::lang('layer.csv_upload');?></a>
+				</h3>	
 			</div>
-			<a href="#" id="work_test">hey everyone</a>
+			
