@@ -18,6 +18,7 @@
 // Layers JS
 
 
+
 function fillFields(id, layer_name, parent_id, layer_color, layer_file_old)
 {
 	$("#adminarea_id").attr("value", unescape(id));
@@ -86,3 +87,97 @@ function deleteLevelName(level)
 	//submit all of this
 	$("#layerListing").submit();
 }
+
+
+/****Cities****/
+
+function addNewCity()
+{
+	if( $('#city_name_A').attr("name"))
+	{
+		alert("<?php echo Kohana::lang('layer.already_new_city');?>");
+	}
+	$('#nocitynames').hide();
+	
+	$.get("<?php echo url::site() . 'admin/locationhighlight_settings/new_city'; ?>",
+	function(data){
+	
+		$('#citytable').append(data);
+		setSaveDelFunctions();
+		
+	}); 
+	return false;
+}
+
+function setSaveDelFunctions()
+{
+		//saves a level name
+	$("a[id^='save_city_btn_']").click(function()
+	{	
+	    var id = this.id.substring(14);
+		var cityName = $('#city_name_'+id).val();
+		var admin_id = $('#city_adminarea_'+id+' option:selected').val();
+		var lat = $('#city_lat_'+id).val();
+		var lon = $('#city_lon_'+id).val();
+		
+		$.ajax({url: "<?php echo url::site() . 'admin/locationhighlight_settings/save_city/'?>",
+			   dataType: "html",
+			   data: {"name":cityName, "admin_id":admin_id, "lat":lat, "lon":lon, "id":id},
+			   type:"POST", 
+			   success:
+				function(data){
+					level_status_msg = $('#city_status_'+id);
+					level_status_msg.html("<span style=\"background:#aaeeaa; border:solid 1px #88dd88; float:right; padding:5px;\">Saved</span>");
+					timeOutStr = "$('#city_status_"+id+"').html(\"\");$('#city_status_"+data+"').html(\"\");";				
+					setTimeout(timeOutStr, 3000);
+					
+					//if ID = a then we need to update that
+					if(id == 'A')
+					{
+						$('#city_name_A').attr("name","city_name_"+data);
+						$('#city_name_A').attr("id","city_name_"+data);
+						
+						$('#city_adminarea_A').attr("name","city_adminarea_"+data);
+						$('#city_adminarea_A').attr("id","city_adminarea_"+data);
+						
+						$('#city_lat_A').attr("name","city_lat_"+data);
+						$('#city_lat_A').attr("id","city_lat_"+data);
+											
+						$('#city_lon_A').attr("name","city_lon_"+data);
+						$('#city_lon_A').attr("id","city_lon_"+data);
+						
+						$('#city_status_A').attr("id","city_status_"+data);
+						
+						$('#save_city_btn_A').attr("id","save_city_btn_"+data);
+	
+						$('#del_city_btn_A').attr("id","del_city_btn_"+data);
+						
+					}
+					
+		}}); 
+		return false;
+	});
+	
+	//deletes a city
+	$("a[id^='del_city_btn_']").click(function()
+	{
+	    var id = this.id.substring(13);
+		$.ajax({url: "<?php echo url::site() . 'admin/locationhighlight_settings/del_city/'?>",
+			   dataType: "html",
+			   data: {"id":id},
+			   type:"POST", 
+			   success:
+				function(data){
+						$('#city_row_'+id).remove();			
+		}}); 
+		return false;  
+	});
+}
+
+
+jQuery(function() {
+	setSaveDelFunctions();
+});
+
+
+

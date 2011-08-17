@@ -17,23 +17,35 @@ class LocationHighlight_Controller extends Controller
 
 		//get admin areas and see if there are any
 		$adminareas = adminareas::get_admin_areas_for_dropdown($parent_id);
-		if(count($adminareas)<1)
+		$adminareas_count = count($adminareas);
+		$level_name_text = "administrative area"; 
+		if(count($adminareas)>0)
 		{
-			return;
+		
+		
+			$level_name = ORM::factory('adminareas_level_names')->where("level", $level)->find();
+			if($level_name->loaded)
+			{
+				$level_name_text = $level_name->name;
+			}
 		}
 		
-		$level_name_text = "administrative area";
-		$level_name = ORM::factory('adminareas_level_names')->where("level", $level)->find();
-		if($level_name->loaded)
+		//see if there are any cities
+		$cities = ORM::factory("location_highlight_cities")
+			->where("adminarea_id", $parent_id)
+			->orderby('name', 'asc')
+			->find_all();
+		$cities_a = array();
+		foreach($cities as $city)
 		{
-			$level_name_text = $level_name->name;
+			$cities_a[$city->latitude."|".$city->longitude] = $city->name;
 		}
-		
-		
 	
 		// Load the View		
 		$form = View::factory('locationhighlight/sub_admin_areas');
+		$form->adminareas_count = $adminareas_count;
 		$form->level_name_text = $level_name_text;
+		$form->cities = $cities_a;
 		$form->admin_areas = $adminareas;
 		$form->parent_name = ORM::factory('adminareas')->where("id", $parent_id)->find()->name;
 		$form->level = $level;

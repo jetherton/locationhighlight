@@ -144,6 +144,7 @@ class LocationHighlight_settings_Controller extends Admin_Controller
 					$path_info = upload::save("file");
 					if ($path_info)
 					{
+						
 						$path_parts = pathinfo($path_info);
 						$file_name = $path_parts['filename'];
 						$file_ext = $path_parts['extension'];
@@ -170,7 +171,12 @@ class LocationHighlight_settings_Controller extends Admin_Controller
 							}
 						}
 
-						$adminarea->file = $file_name.".".$file_ext;
+						$adminarea->file = url::base().Kohana::config('upload.relative_directory')."/".$file_name.".".$file_ext;
+						$adminarea->save();
+					}
+					else //no file was saved, so use the default
+					{
+						$adminarea->file = url::base()."plugins/locationhighlight/kml/blank.kml";
 						$adminarea->save();
 					}
 
@@ -190,17 +196,11 @@ class LocationHighlight_settings_Controller extends Admin_Controller
 			}
 		}
 
-		// Pagination
-		$pagination = new Pagination(array(
-							'query_string' => 'page',
-							'items_per_page' => 500,
-							'total_items'	 => ORM::factory('adminareas')
-													->count_all()
-						));
+
 
 		$adminareas = ORM::factory('adminareas')
 						->orderby('name', 'asc')
-						->find_all(500,	$pagination->sql_offset);
+						->find_all();
 							
 		
 		//turn the admin areas into a hierarchy
@@ -223,15 +223,25 @@ class LocationHighlight_settings_Controller extends Admin_Controller
 							
 		$parent_dropdown = array();
 		$parent_dropdown['NULL']="--None--";
+		$city_admin_area_dropdown = array();
 		foreach($adminareas as $area)
 		{
 			$parent_dropdown[$area->id] = $area->name;
+			$city_admin_area_dropdown[$area->id] = $area->name;
 		}
 		
 		//get level names
 		$level_names = ORM::factory('adminareas_level_names')
 			->orderby("level", "asc")
 			->find_all();
+			
+			
+		//get cities
+		$cities = ORM::factory('location_highlight_cities')
+			->select("location_highlight_cities.*, adminareas.id as admin_id, adminareas.name as admin_name")
+			->join('adminareas', 'location_highlight_cities.adminarea_id', 'adminareas.id')
+			->find_all();
+			
 		
 		//figure out the next level
 		$next_level = 1;
@@ -248,9 +258,9 @@ class LocationHighlight_settings_Controller extends Admin_Controller
 		$this->template->content->form_error = $form_error;
 		$this->template->content->form_saved = $form_saved;
 		$this->template->content->form_action = $form_action;
-		$this->template->content->pagination = $pagination;
-		$this->template->content->total_items = $pagination->total_items;
 		$this->template->content->adminareas = $adminareas;
+		$this->template->content->cities = $cities;
+		$this->template->content->city_admin_area_dropdown = $city_admin_area_dropdown;
 
 		// Javascript Header
 		$this->template->colorpicker_enabled = TRUE;
@@ -326,5 +336,98 @@ class LocationHighlight_settings_Controller extends Admin_Controller
 		
 		echo "success";
 	}
+	
+	
+	
+	/*********************************************
+	* Return html for a new city 
+	*********************************************/
+	public function new_city()
+	{
+	
+		$this->template = "";
+		$this->auto_render = FALSE;
+		
+		$adminareas = ORM::factory('adminareas')
+						->orderby('name', 'asc')
+						->find_all();
+						
+		$city_admin_area_dropdown = array();
+		foreach($adminareas as $area)
+		{		
+			$city_admin_area_dropdown[$area->id] = $area->name;
+		}
+							
+		
+		$view = new View('locationhighlight/new_city');
+		$view->id = 'A';
+		$view->city_admin_area_dropdown = $city_admin_area_dropdown;
+		$view ->render(TRUE);
+	
+	}//end function new_level_name	
+	
+	
+	
+	/************************************************
+	* Save info of a city
+	************************************************/
+	public function save_city()
+	{
+		
+		$name = $_POST['name'];
+		$admin_id = $_POST['admin_id'];
+		$lat = $_POST['lat'];
+		$lon = $_POST['lon'];
+		$id = $_POST['id'];
+	
+		$this->template = "";
+		$this->auto_render = FALSE;
+		
+		
+		if($id == 'A')
+		{
+			//doesn't exists so make a new one
+			$city = ORM::factory('location_highlight_cities');
+		}
+		else 
+		{
+			$city = ORM::factory('location_highlight_cities')->where("id", $id)->find();	
+		}
+		
+		$city->name = $name;
+		$city->adminarea_id = $admin_id;
+		$city->latitude = $lat;
+		$city->longitude = $lon;
+		$city->save();
+		
+		echo $city->id;
+	}
+
+	
+	/************************************************
+	* Delete info of a city
+	************************************************/
+	public function del_city()
+	{
+		
+		
+		$id = $_POST['id'];
+	
+		$this->template = "";
+		$this->auto_render = FALSE;
+		
+		
+		if($id == 'A')
+		{
+			echo "Worked, deleted $id";
+			return;
+		}
+		else 
+		{
+			ORM::factory('location_highlight_cities')->where("id", $id)->delete_all();	
+		}
+		
+		echo "Worked, deleted $id";
+	}	
 
 }//end class

@@ -25,7 +25,14 @@
 		'parent' => 'Parent Admin Area:',
 		'area' => 'Admin Areas',
 		'for' => 'for',
-		
-		
+		'cityname'=> 'City Name',
+		'adminarea'=> 'Admin Area',
+		'lat_long'=> 'Latitude, Longitude',
+		'cities' => 'Cities',
+		'newcity' => 'Add New City',
+		'lat'=>'Latitude',
+		'lon'=>'Longitude',
+		'already_new_city' => 'There is already a new city that needs to be saved',
+	
 	);
 ?>
