@@ -54,6 +54,7 @@
 				<!-- Level Names -->
 				<div style="margin-bottom:20px;">
 				<h3><?php echo Kohana::lang('layer.admin');?></h3>
+				<p><?php echo Kohana::lang('layer.admin_explain');?></p>
 				<a href="#" onclick="addNewLevelName(); return false;" style="border:solid grey 1px; background:#f2f7fa; float:right; padding:5px; margin 5px;"><?php echo Kohana::lang('layer.new');?></a>
 				
 				
@@ -124,7 +125,7 @@
 					<!-- tabset -->
 					<a name="add"></a>
 					<ul class="tabset">
-						<li><a href="#" class="active"><?php echo Kohana::lang('ui_main.add_edit');?></a></li>
+						<li><a href="#" class="active"><?php echo Kohana::lang('layer.add_edit_area');?></a></li>
 					</ul>
 					<!-- tab -->
 					<div class="tab">
@@ -136,8 +137,9 @@
 							id="action" value="a"/>
 						<input type="hidden" name="layer_file_old" 
 							id="layer_file_old" value=""/>
+						<div style="margin:10px;"><?php echo Kohana::lang('layer.add_edit_area_explain');?>:</div>
 						<div class="tab_form_item">
-							<strong><?php echo Kohana::lang('ui_main.layer_name');?>:</strong><br />
+							<strong><?php echo Kohana::lang('layer.admin_area_name');?>:</strong><br />
 							<?php print form::input('name', '', ' class="text"'); ?>
 						</div>
 						<div class="tab_form_item">
@@ -146,7 +148,8 @@
 						</div>
 						<div style="clear:both"></div>
 						<div class="tab_form_item">
-							<strong><?php echo Kohana::lang('ui_main.kml_kmz_upload');?>:</strong><br />
+							<strong><?php echo Kohana::lang('layer.kml_kmz_upload');?>:</strong><br />
+							<div style="margin-left:10px;"><?php echo Kohana::lang('layer.kml_kmz_upload_optional');?>:</div>
 							<?php print form::upload('file', '', ''); ?>
 						</div>
 						<div style="clear:both"></div>
