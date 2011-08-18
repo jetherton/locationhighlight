@@ -222,7 +222,7 @@ class LocationHighlight_settings_Controller extends Admin_Controller
 		
 							
 		$parent_dropdown = array();
-		$parent_dropdown['NULL']="--None--";
+		$parent_dropdown['NULL']="--Top Level--";
 		$city_admin_area_dropdown = array();
 		foreach($adminareas as $area)
 		{
@@ -485,7 +485,7 @@ class LocationHighlight_settings_Controller extends Admin_Controller
 
 			if(count($errors))
 			{
-				$this->template->content = new View('admin/reports_upload');
+				$this->template->content = new View('locationhighlight/data_upload');
 				$this->template->content->title = Kohana::lang('ui_admin.upload_reports');
 				$this->template->content->errors = $errors;
 				$this->template->content->form_error = 1;

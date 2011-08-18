@@ -38,8 +38,10 @@ class LocationhighlightImporter {
 	function import($filehandle) 
 	{
 		$csvtable = new Csvtable($filehandle);
+
 		// Set the required columns of the CSV file
 		$requiredcolumns = array('CITY_NAME','LAT', 'LON');
+		/*
 		foreach ($requiredcolumns as $requiredcolumn)
 		{
 			// If the CSV file is missing any required column, return an error
@@ -53,6 +55,7 @@ class LocationhighlightImporter {
 		{
 			return false;
 		}
+		*/
 
 		
 		$rows = $csvtable->getRows();
@@ -92,7 +95,48 @@ class LocationhighlightImporter {
 	 */
 	function importdata($row)
 	{
+		//check for valid columns		
+		$foundColumns = array();
+		$requiredcolumns = array('CITY_NAME'=>'CITY_NAME','LAT'=>'LAT', 'LON'=>'LON');
+		foreach($row as $key=>$val)
+		{
+			foreach($requiredcolumns as $reqCol)
+			{
+				
+				if(strtoupper(trim($key)) == $reqCol)
+				{
+					$foundColumns[$reqCol] = $key;
+				}
+			}
+		}
+		 
 
+		if(count($requiredcolumns) != count($foundColumns))
+		{
+			$i = 0;
+			$colStr = "";
+			$missingStr = "";
+			foreach($foundColumns as $key => $fCol)
+			{
+				$i++;
+				if($i>1){$colStr .= ", ";}
+				$colStr .= '"'.$fCol.'"';
+			}
+			$i = 0;
+			foreach($requiredcolumns as $key)
+			{
+				if(!isset($foundColumns[$key]))
+				{
+					$i++;
+					if($i>1){$missingStr .= ", ";}
+					$missingStr = '"'.$key.'"';
+				}
+			}
+			
+			$this->errors[] = "Found the following columns: $colStr, but missing $missingStr";
+			return false;
+		}
+		
 		
 		// STEP 1: Look at the admin areas in increasing level and add them if they're not already in the database
 		$parentID = null;
@@ -134,9 +178,9 @@ class LocationhighlightImporter {
 		$lat = null;
 		$lon = null;
 		
-		if(isset($row["CITY_NAME"]))
+		if(isset($row[$foundColumns["CITY_NAME"]]))
 		{
-			$city_name = $row["CITY_NAME"];
+			$city_name = $row[$foundColumns["CITY_NAME"]];
 		}
 		else
 		{
@@ -144,9 +188,9 @@ class LocationhighlightImporter {
 			return;
 		}
 		
-		if(isset($row["LAT"]))
+		if(isset($row[$foundColumns["LAT"]]))
 		{
-			$lat = $row["LAT"];
+			$lat = $row[$foundColumns["LAT"]];
 		}
 		else
 		{
@@ -154,9 +198,9 @@ class LocationhighlightImporter {
 			return;
 		}
 		
-		if(isset($row["LON"]))
+		if(isset($row[$foundColumns["LON"]]))
 		{
-			$lon = $row["LON"];
+			$lon = $row[$foundColumns["LON"]];
 		}
 		else
 		{
