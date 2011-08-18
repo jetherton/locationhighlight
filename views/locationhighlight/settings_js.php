@@ -58,6 +58,22 @@ function addNewLevelName()
 	return false;
 }
 
+function changeCities()
+{
+	var offset = $('#city_span option:selected').val();
+	$('#change_cities_wait').html('<img src="<?php echo url::base(); ?>media/img/loading_g.gif"/>');
+	$.get("<?php echo url::site() . 'admin/locationhighlight_settings/getCities/'; ?>"+offset,
+	function(data){
+	
+		$('#city_table_holder').html(data);
+		$('#change_cities_wait').html('');
+		
+	}); 
+	
+
+	return false;
+}
+
 //saves a level name
 function saveLevelName(level)
 {

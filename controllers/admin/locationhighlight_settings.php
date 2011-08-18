@@ -236,11 +236,30 @@ class LocationHighlight_settings_Controller extends Admin_Controller
 			->find_all();
 			
 			
-		//get cities
+		//get the first set of cities
 		$cities = ORM::factory('location_highlight_cities')
 			->select("location_highlight_cities.*, adminareas.id as admin_id, adminareas.name as admin_name")
 			->join('adminareas', 'location_highlight_cities.adminarea_id', 'adminareas.id')
-			->find_all();
+			->orderby("name", "asc")
+			->find_all(500, 0);
+			
+		$cities_count = ORM::factory('location_highlight_cities')->count_all();
+		
+		$cities_drop_down = array();
+		$first_key = null;
+		$step = 500;
+		for($i = 0; $i < $cities_count; $i = $i + $step)
+		{
+			if($i + $step > $cities_count)
+			{
+				$step = $cities_count - $i;
+			}
+			if($first_key == null)
+			{
+				$first_key = $i+1;
+			}
+			$cities_drop_down[$i+1] = ($i+1). " - ".($i+$step);
+		}
 			
 		
 		//figure out the next level
@@ -250,6 +269,8 @@ class LocationHighlight_settings_Controller extends Admin_Controller
 			$next_level = $level_name->level + 1;
 		}
 		
+		$this->template->content->cities_drop_down = $cities_drop_down;
+		$this->template->content->cities_drop_down_selected = $first_key;
 		$this->template->content->next_level = $next_level;
 		$this->template->content->level_names = $level_names;
 		$this->template->content->area_hierarchy = $area_hierarchy;
@@ -294,6 +315,37 @@ class LocationHighlight_settings_Controller extends Admin_Controller
 		
 		return $retVal;
 	}//end hierarchy_stack
+	
+	/*********************************************
+	* Get cities
+	*********************************************/
+	public function getCities($offset)
+	{
+		//get the first set of cities
+		$cities = ORM::factory('location_highlight_cities')
+			->select("location_highlight_cities.*, adminareas.id as admin_id, adminareas.name as admin_name")
+			->join('adminareas', 'location_highlight_cities.adminarea_id', 'adminareas.id')
+			->orderby("name", "asc")
+			->find_all(500, $offset);
+			
+		$adminareas = ORM::factory('adminareas')
+						->orderby('name', 'asc')
+						->find_all();
+						
+		$city_admin_area_dropdown = array();
+		foreach($adminareas as $area)
+		{		
+			$city_admin_area_dropdown[$area->id] = $area->name;
+		}
+		
+		$this->template = "";
+		$this->auto_render = FALSE;
+		
+		$view = new View('locationhighlight/cities');
+		$view->city_admin_area_dropdown = $city_admin_area_dropdown;
+		$view->cities = $cities;
+		$view ->render(TRUE);
+	}
 	
 	/*********************************************
 	* Return html for a new level name 

@@ -267,72 +267,18 @@
 				<!-- Cities -->
 				<div class="tabs">
 				<h3><?php echo Kohana::lang('layer.cities');?></h3>
+				<strong><?php echo Kohana::lang('layer.viewing_cities');?>: </strong><?php print form::dropdown('city_span', $cities_drop_down, $cities_drop_down_selected, 'style="width:150px;" onchange="changeCities();"'); ?><span id="change_cities_wait"></span> 
 				<a href="#" onclick="addNewCity(); return false;" style="border:solid grey 1px; background:#f2f7fa; float:right; padding:5px; margin 5px;"><?php echo Kohana::lang('layer.newcity');?></a>
 
 				<!-- level-table -->
 				<div class="report-form">
-						<div>
-							<table  class="table">
-								<thead>
-									<tr>
-										<th class="col-1" style="width:20px;">&nbsp;</th>
-										<th class="col-2" style="width:50px;"><?php echo Kohana::lang('layer.cityname');?></th>
-										<th class="col-3" style="width:200px;"><?php echo Kohana::lang('layer.adminarea');?></th>
-										<th class="col-4" style="width:200px;"><?php echo Kohana::lang('layer.lat_long');?></th>
-										<th class="col-4" style="width:200px;"><?php echo Kohana::lang('ui_main.actions');?></th>
-									</tr>
-								</thead>
-								<tfoot>
-									<tr class="foot">
-										<td colspan="5">
-											---
-										</td>
-									</tr>
-								</tfoot>
-								<tbody id="citytable">
-									<?php
-									if ( count ($cities) == 0)
-									{
-									?>
-										<tr id="nocitynames">
-											<td colspan="5" class="col">
-												<h3><?php echo Kohana::lang('ui_main.no_results');?></h3>
-											</td>
-										</tr>
-									<?php	
-									}
-									foreach ($cities as $city)
-									{
-										
-									?>
-										<tr id="city_row_<?php echo $city->id; ?>">
-											<td class="col-1" style="width:20px;">&nbsp;</td>
-											<td class="col-2" style="width:50px;">
-												<input type="text" id="city_name_<?php echo $city->id; ?>" name="city_name_<?php echo $city->id; ?>" value="<?php echo $city->name; ?>"/>
-											</td>
-											<td class="col-3" style="width:200px;">
-												<?php print form::dropdown('city_adminarea_'.$city->id, $city_admin_area_dropdown, $city->admin_id, 'style="width:150px;"'); ?>
-											</td>
-											<td class="col-3" style="width:250px;">
-												<?php echo Kohana::lang("layer.lat");?>:
-												<input type="text" id="city_lat_<?php echo $city->id; ?>" name="city_lat_<?php echo $city->id; ?>" value="<?php echo $city->latitude; ?>"/>
-												<br/>
-												<?php echo Kohana::lang("layer.lon");?>:
-												<input type="text" id="city_lon_<?php echo $city->id; ?>" name="city_lon_<?php echo $city->id; ?>" value="<?php echo $city->longitude; ?>"/>
-											</td>
-											<td class="col-4" style="width:150px;">
-												<span id="city_status_<?php echo $city->id; ?>"></span>
-												<ul>
-													<li class="none-separator"><a id="save_city_btn_<?php echo $city->id; ?>" href="#" ><?php echo Kohana::lang('layer.save');?></a></li>
-													<li><a id="del_city_btn_<?php echo $city->id; ?>" href="#" ><?php echo Kohana::lang('layer.delete');?></a></li>
-												</ul>
-											</td>
-										</tr>
-										<?php									
-									}
-									?>
-								</tbody>
-							</table>
+						<div id="city_table_holder">
+							<?php
+									$view = new View('locationhighlight/cities');
+									$view->cities = $cities;
+									$view->city_admin_area_dropdown = $city_admin_area_dropdown;
+									$view ->render(TRUE); 
+							?>
 						</div>
 				</div>
 				
