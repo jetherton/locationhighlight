@@ -38,7 +38,7 @@
 		'lon'=>'Longitude',
 		'already_new_city' => 'There is already a new city that needs to be saved',
 		'csv_upload' =>'Upload CSV data',
-		'csv_upload_details'=>'CSV should have the following columns:<br/><br/>CITY_NAME,&lt;admin area 1&gt;,&lt;admin area 2&gt;,...&lt;admin area N&gt;,LAT, LON<br/><br/> Be sure to define your admin areas before running the import. You will also need to upload the KML files manually, sorry.',
+		'csv_upload_details'=>'CSV should have the following columns:<br/><br/>CITY_NAME,&lt;admin area 1&gt;,&lt;admin area 2&gt;,...&lt;admin area N&gt;,LAT, LON<br/><br/> Be sure to define your admin areas before running the import. You will also need to upload the KML files manually, sorry.<br/><br/> <strong>Take note:</strong> To reduce database load the importer does not check for duplication, use caution when importing data into a database that is not empty.',
 		'kml_kmz_upload'=>'Upload KMZ/KML File*',
 		'kml_kmz_upload_optional'=>'*It is optional to upload a KML/KMZ',
 	
