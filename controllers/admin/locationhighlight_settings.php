@@ -244,7 +244,7 @@ class LocationHighlight_settings_Controller extends Admin_Controller
 			
 		
 		//figure out the next level
-		$next_level = 1;
+		$next_level = 0;
 		foreach($level_names as $level_name)
 		{
 			$next_level = $level_name->level + 1;
