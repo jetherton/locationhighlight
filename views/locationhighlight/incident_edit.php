@@ -54,12 +54,12 @@
 
 		function switchCities(level)
 		{
-			var layerData = $('#cities_'+level).val();
-			var locationName = $('#cities_'+level).text();
+			var layerData = $('#cities_'+level+ ' option:selected').val();
+			var locationName = $('#cities_'+level+ ' option:selected').text();
 
 			for(i = (parseInt(level)-1); i>=0; i--)
 			{
-				locationName = locationName + ", " + $('#admin_area_'+i).text();
+				locationName = locationName + ", " + $('#admin_area_'+i+ ' option:selected').text();
 			}
 			
 			var seperatorPos =  layerData.indexOf("|");
