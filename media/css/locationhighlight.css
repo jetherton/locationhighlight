@@ -1,0 +1,36 @@
+.location_box,
+a.location_clearmap{
+	display: block;
+	clear: block;
+	float: left;
+	background: rgba(255, 253, 205, 1);
+	margin: .5em 1em .5em 0;
+	padding: 1em;
+	border-radius: 9px;
+	}
+a.location_clearmap {
+	background: #ccc;
+	font-weight: bold;
+	text-decoration: none;
+	}
+a.location_clearmap:hover {
+	background: red;
+	color: #fff;
+	}
+.location_box h4 {
+	margin-bottom: 5px;
+	font-weight: bold;
+	font-size: 1.3em;
+	text-transform: uppercase;
+	}
+.location_box a {
+	font-weight: bold;
+	}
+
+/* administration report form */
+div.f-col-1 .location_box {
+	width: 477px;
+	}
+div.f-col-1 .location_box h4 {
+	padding-top: 0;
+	}

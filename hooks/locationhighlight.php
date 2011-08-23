@@ -37,6 +37,7 @@ class locationhighlight {
 
 					// Hook into the form itself on the admin side
 					Event::add('ushahidi_action.report_form_admin_location', array($this, '_highlight'));
+					plugin::add_stylesheet('locationhighlight/media/css/locationhighlight');
 					break;
 				
 				//Hook into frontend Submit View
@@ -44,8 +45,8 @@ class locationhighlight {
 					//Hook into the form on the frontend
 					Event::add('ushahidi_action.report_form_location', array($this, '_highlight'));
 					Event::add('ushahidi_action.report_form_admin_location', array($this, '_highlight')); //for backwards compatibility
+					plugin::add_stylesheet('locationhighlight/media/css/locationhighlight');
 					break;
-				
 					
 				default:
 					break;

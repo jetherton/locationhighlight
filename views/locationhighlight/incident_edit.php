@@ -1,5 +1,4 @@
-<div class="row" style="border: 2px solid gray; padding: 10px; width:340px; margin:auto; margin-top:10px; margin-bottom:10px;" >
-
+<div class="locations">
 	<script type="text/javascript">
 
 		/*
@@ -126,16 +125,13 @@
 
 	</script>
 
-
-	<span style="float:right;"><a href="#" onclick="clearMap(0); $('#adminarea_level_0').html(''); return false;"><?php echo Kohana::lang('layer.clear');?></a></span>
-	<h4 style="margin-bottom:5px;"><?php echo Kohana::lang('layer.select');?> <?php echo $level_name; ?>:
-	</h4>
-	
-	<input type="hidden" id="max_admin_area_level" name="max_admin_area_level" value="0" />
-	<?php print form::dropdown('admin_area_0', $admin_areas, 'standard'); ?>
-	
-	<a href="#" onclick="switchArea(0);  return false;"><?php echo Kohana::lang('layer.update');?></a> <span id="admin_area_loading_0"></span>
+	<a href="#" onclick="clearMap(0); $('#adminarea_level_0').html(''); return false;" class="location_clearmap"><?php echo Kohana::lang('layer.clear');?></a>
+	<div class="location_box">
+		<h4><?php echo Kohana::lang('layer.select');?> <?php echo $level_name; ?>:</h4>
+		<input type="hidden" id="max_admin_area_level" name="max_admin_area_level" value="0" />
+		<?php print form::dropdown('admin_area_0', $admin_areas, 'standard'); ?>
+		<a href="#" onclick="switchArea(0);  return false;"><?php echo Kohana::lang('layer.update');?></a> <span id="admin_area_loading_0"></span>
+	</div>
 
 	<div id="adminarea_level_0"></div>
-
 </div>
