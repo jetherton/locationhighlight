@@ -1,6 +1,6 @@
 === About ===
 name: Location Highlighter
-website: http://apps.ushahidi.com
+website: https://github.com/jetherton/locationhighlight
 description: Lets users pick from a drop down list the administrative areas they are looking for and it highlights them on the map. The plugin also lets you define cities that can fall under any and all admin areas. If a user selects one of these cities the map will be centered on it, and the current admin areas and city name will be used to populate the location name field in Ushahidi.
 version: 1.1
 requires: 2.0
